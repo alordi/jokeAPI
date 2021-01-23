@@ -11,7 +11,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"strconv"
 	"strings"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/awslabs/aws-lambda-go-api-proxy/gorillamux"
 )
+
+var gmLambda *gorillamux.GorillaMuxAdapter
 
 func homePage(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintln(w, "Welcome to Austin's Joke API")
@@ -306,7 +311,7 @@ func getJokeByID(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func main() {
+func init() {
 	//Init Router
 	r := mux.NewRouter()
 
@@ -322,6 +327,16 @@ func main() {
 	
 
   	// set our port address
-	log.Fatal(http.ListenAndServe(":8000", r))
+	//log.Fatal(http.ListenAndServe(":8000", r))
 
+	gmLambda = gorillamux.New(r)
+
+}
+
+func HandleRequest(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	return gmLambda.ProxyWithContext(ctx, req)
+}
+
+func main() {
+	lambda.Start(HandleRequest)
 }
