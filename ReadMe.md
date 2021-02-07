@@ -29,12 +29,7 @@ Public Routes:
 - https://jokes.alordi.com/jokes/{id} --- Get joke by id
 
 
-
-  
-
-
-
-Joke types:
+## Joke types:
 - sports
 - science
 - math
