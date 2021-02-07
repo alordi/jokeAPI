@@ -8,7 +8,7 @@
 Note: alternatively you can say "Tell me a joke about X" where X is a category, e.g. "Tell me a joke about math"
 
 
-## Using Joke Api
+## Using Joke API
 This is the backend of the text service
 
 Public Routes:
